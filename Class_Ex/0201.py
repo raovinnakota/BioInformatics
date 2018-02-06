@@ -1,25 +1,61 @@
-# Rao Vinnakota
-# CMSC 220
-# Class Exercise 0201
+# -*- coding: utf-8 -*-
+"""
+Enzyme functions
+Created on Thu Feb  1 13:49:18 2018
 
-###Ligase###
-seq = "CTTTCGCAATGATA"
-seq2 = "TGGTCAATBGCATTCAA"
+@author: Bioinformatics Class
+"""
+#Ligase
+#connects two Strings
+#concatenants
+seq = 'CTTTCGCAATGATA'
+seq2 = 'TGGTCAATGCATTTCAA'
 
-def dnaligase(seq, seq2):
-    valid = ['C', 'G', 'T', 'A']
-    sumseq = seq + seq2
+#For lab report
+#Create a reverse Transcription function
+def reverseTransDNA(DNA):
+    DNA = DNA.replace('T', 'U')
+    transTable = str.maketrans('AUCG', 'UAGC')
+    DNAcomp = DNA.translate(transTable)
+    DNArev = DNAcomp[::-1]
+    return DNArev
 
-    for el in sumseq:
-        if el not in valid:
-            raise Exception("That's not valid input")
+#validate input
+def ligase(sequence, seq2):
+#strings (then lists)
+    sumseq = sequence +seq2
+#compare last element compare ot first seq
+
+    #print output
     print(sumseq)
-    return (sumseq)
+    #return output
+    return sumseq
 
-def nuclease(sequence, brkpoint):
-    new = sequence[:brkpoint]
-    new2 = sequence[brkpoint:]
+ligase(seq,seq2)
 
-    return new, new2
+#validate input
+def dnaligase(sequence, seq2):
+    validation = ['A','C','T','G']
 
-print(nuclease(seq, 4))
+    #strings (then lists)
+    sumseq = sequence +seq2
+    #compare last element compare ot first seq
+    for el in sumseq:
+       if el not in validation:
+           raise Exception('Not a volid DNA sequence')
+
+    #print output
+    print(sumseq)
+    #return output
+    return sumseq
+
+#cuts dna
+def nuclease(sequence,cutpoint):
+    news = sequence[2:cutpoint]
+    news2 = sequence[cutpoint:]
+
+    return news, news2
+
+print(nuclease(seq,4))
+
+dnaligase(seq,seq2)
