@@ -39,6 +39,7 @@ def reverseTransDNA(incoming):
     #convert the input to upper case
     incoming = incoming.upper()
     #convert input from string to list
+    input_str = incoming
     incoming = list(incoming)
     #iterate through created input list
     for i in range(len(incoming)):
@@ -53,8 +54,6 @@ def reverseTransDNA(incoming):
             #otherwise set the the unrecognized nucleotide with "N"
             else:
                 incoming[i] = "N"
-    #set the input list back to a string to return and print
-    input_str = ''.join(incoming)
     #call the right helper function based on the type value
     if (input_type == "dna"):
         dna_to_rna(incoming, rna_in, dna_in)
