@@ -8,6 +8,8 @@ Created on Thu Feb  1 13:49:18 2018
 #Ligase
 #connects two Strings
 #concatenants
+from string import maketrans
+
 seq = 'CTTTCGCAATGATA'
 seq2 = 'TGGTCAATGCATTTCAA'
 
@@ -15,10 +17,12 @@ seq2 = 'TGGTCAATGCATTTCAA'
 #Create a reverse Transcription function
 def reverseTransDNA(DNA):
     DNA = DNA.replace('T', 'U')
-    transTable = str.maketrans('AUCG', 'UAGC')
+    intab = "AUCG"
+    outtab = "UAGC"
+    transTable = maketrans(intab, outtab)
     DNAcomp = DNA.translate(transTable)
     DNArev = DNAcomp[::-1]
-    return DNArev
+    return DNAcomp, DNArev
 
 #validate input
 def ligase(sequence, seq2):
@@ -56,6 +60,4 @@ def nuclease(sequence,cutpoint):
 
     return news, news2
 
-print(nuclease(seq,4))
-
-dnaligase(seq,seq2)
+print(reverseTransDNA("CTTTCGCAATGATA"))
