@@ -67,4 +67,4 @@ def reverseTransDNA(incoming):
     #return the two strings
     return (input_str, output_str)
 
-reverseTransDNA("CUUUCGCAAUGAUA")
+reverseTransDNA("CUUUCGCAAUGAUAbluacg")
