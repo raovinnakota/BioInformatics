@@ -1,3 +1,4 @@
+import re
 
 def readFasta(filename):
     sequence = []
@@ -21,9 +22,14 @@ def user_input():
 
 def nucleotide(nuc_seq):
     nuc_len = len(nuc_seq)
+    freqA = len(re.findall('[A|a]', nuc_seq))
+    freqT = len(re.findall('[T|t]', nuc_seq))
+    freqG = len(re.findall('[G|g]', nuc_seq))
+    freqC = len(re.findall('[C|c]', nuc_seq))
+    #freqOther = len(re.findall(['A|a|T|t|G|g|C|c'], nuc_seq))
+    freqOther = nuc_len - (freqA + freqT + freqG + freqC)
+    print "TotalLength:%s\nFreqA:%s\nFreqT:%s\nFreqC:%s\nFreqG:%s\nOther:%s"%(nuc_len, freqA, freqT, freqC, freqG, freqOther)
 
-    
-    print(nuc_len)
-    return(nuc_len)
+    return(nuc_len, freqA)
 
 user_input()
