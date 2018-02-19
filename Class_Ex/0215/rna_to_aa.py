@@ -12,6 +12,8 @@ Created on Wed Jan 17 12:39:02 2018
 
 @author: Kerri Norton
 """
+from string import maketrans
+
 #Dictionary for AA
 STANDARD_GENETIC_CODE = {
           'UUU':'Phe', 'UUC':'Phe', 'UCU':'Ser', 'UCC':'Ser',
@@ -39,3 +41,32 @@ AMINO_ACID_CODE = {
           'Thr':'T', 'Val':'V', 'Trp':'W', 'Tyr':'Y',
           'Stop':'_',
         }
+
+def reverseTransDNA(DNA):
+    DNA = DNA.replace('T', 'U')
+    intab = "AUCG"
+    outtab = "UAGC"
+    transTable = maketrans(intab, outtab)
+    DNAcomp = DNA.translate(transTable)
+    DNArev = DNAcomp[::-1]
+    return DNAcomp, DNArev
+
+def translate(sequence):
+    codons = []
+    amino_acids = []
+    amino_seq = ""
+    i = 0
+
+    while (i < len(sequence)):
+        codons.append(sequence[i:i+3])
+        i+=3
+    for codon in codons:
+        if codon in STANDARD_GENETIC_CODE:
+            amino_acids.append(STANDARD_GENETIC_CODE[codon])
+    for amino_acid in amino_acids:
+        if amino_acid in AMINO_ACID_CODE:
+            amino_seq += AMINO_ACID_CODE[amino_acid]
+    print "Incoming RNA: %s\nTranslated Amino Acids: %s"%(sequence, amino_seq)
+    return (sequence, amino_seq)
+
+translate("UAUUUAUUGCUUCAUCCA")
