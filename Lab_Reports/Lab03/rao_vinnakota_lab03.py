@@ -10,8 +10,8 @@ class Sequence:
     def __init__(self, filename):
         if not filename:
             raise Exception("The Sequence class requires a filepath as the input")
-    self.filename = filename
-    self.fasta = ''
+        self.filename = filename
+        self.fasta = ""
 
     def get_filename(self):
         return (self.filename)
@@ -34,6 +34,18 @@ class Sequence:
         my_file.close()
         self.fasta += ''.join(sequence)
 
+    def create_frame(self, seq):
+        codons = []
+        i = 3
+
+        while (i < len(seq)):
+            codons.append(seq[i:i+3])
+            i += 3
+        return (codons)
+
+    def translateDNA(self, )
+
 filename = 'sequence.fasta'
 sequence = Sequence(filename)
+sequence.set_fasta()
 print(sequence.get_fasta())
