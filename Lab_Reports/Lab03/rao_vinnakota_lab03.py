@@ -43,6 +43,7 @@ class Sequence:
         self.filename = filename
         self.fasta = ""
         self.rev_comp = ""
+        self.reading_frames = []
         self.amino_acids = []
 
     def get_filename(self):
@@ -57,7 +58,13 @@ class Sequence:
     def get_amino_acids(self):
         return (self.amino_acids)
 
-    def set_amino_acids(self, amino_acid):
+    def get_reading_frames(self):
+        return (self.reading_frames)
+
+    def add_reading_frame(self, frame):
+        self.reading_frames.append(frame)
+
+    def add_amino_acid(self, amino_acid):
         self.amino_acids.append(amino_acid)
 
     def set_fasta(self):
@@ -84,6 +91,15 @@ class Sequence:
         comp = self.fasta.translate(transtable)
         self.rev_comp = comp[::-1]
 
+    def set_frames(self):
+        fasta = self.get_fasta()
+        rev_comp = self.get_rev_comp()
+
+        for i in range(3):
+            self.add_reading_frame(fasta[i:])
+        for i in range(3):
+            self.add_reading_frame(rev_comp[i:])
+
     def create_frame(self, seq):
         seq = seq.replace('T', 'U')
         codons = []
@@ -109,7 +125,7 @@ class Sequence:
             for amino_acid in amino_acids:
                 if amino_acid in AMINO_ACID_CODE:
                     amino_acid_seq += AMINO_ACID_CODE[amino_acid]
-            self.set_amino_acids(amino_acid_seq)
+            self.add_amino_acid(amino_acid_seq)
         for i in range(3):
             codons = self.create_frame(rev_comp[i:])
             amino_acid = []
@@ -120,7 +136,7 @@ class Sequence:
             for amino_acid in amino_acids:
                 if amino_acid in AMINO_ACID_CODE:
                     amino_acid_seq += AMINO_ACID_CODE[amino_acid]
-            self.set_amino_acids(amino_acid_seq)
+            self.add_amino_acid(amino_acid_seq)
 
 
     def translateDNA(self):
@@ -136,4 +152,7 @@ class Sequence:
 
 filename = 'sequence.fasta'
 Seq = Sequence(filename)
+Seq.set_fasta()
+Seq.set_frames()
+print(Seq.reading_frames)
 Seq.translateDNA()
