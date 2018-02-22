@@ -170,8 +170,9 @@ class Sequence:
 
         for frame in frames:
             rframe = frame.replace('T', 'U')
+            #uses search and regex to find matches between start/stop codons
             match = re.search(r'AUG\w+(?:UAG|UAA|UGA)', rframe)
-            #print match.start()
+            #if a match exists, it adds the substring to the tuple
             if match:
                 output = output + (match.group(), )
             else:
@@ -184,11 +185,14 @@ class Sequence:
         length = 0
         count = 0
 
+        #creates an indexable list to iterate through tuple
         for i, a in enumerate(frames):
+            #check against current length
             if (a and (len(a) > length)):
                 length = len(a)
                 count = i
                 frame = a
+        #print and return longest frame
         print("Longest: Frame #%d:%s")%(count, frame)
         return frame
 
@@ -196,4 +200,4 @@ filename = 'rf.fasta'
 Seq = Sequence(filename)
 Seq.predictRF()
 Seq.longestRE()
-Seq.translateDNA()
+Seq.translateDNA()x
