@@ -41,7 +41,7 @@ class Sequence:
         if not filename:
             raise Exception("The Sequence class requires a filepath as the input")
         self.filename = filename
-        self.fasta = ""
+        self.DNA = ""
         self.rev_comp = ""
         self.reading_frames = []
         self.amino_acids = []
@@ -50,7 +50,7 @@ class Sequence:
         return (self.filename)
 
     def get_fasta(self):
-        return (self.fasta)
+        return (self.DNA)
 
     def get_rev_comp(self):
         return (self.rev_comp)
@@ -67,6 +67,14 @@ class Sequence:
     def add_amino_acid(self, amino_acid):
         self.amino_acids.append(amino_acid)
 
+    def validate_fasta(self, seq):
+        bases = ['A', 'T', 'C', 'G', 'N']
+
+        for i in seq:
+            if i not in bases:
+                raise Exception("Invalid sequence in the input")
+        return (1)
+
     def set_fasta(self):
         sequence = []
         seq = ''
@@ -77,10 +85,10 @@ class Sequence:
                 continue
             else:
                 seq += line.rstrip()
-        if seq:
+        if (self.validate_fasta(seq) == 1):
             sequence.append(seq)
         my_file.close()
-        self.fasta += ''.join(sequence)
+        self.DNA += ''.join(sequence)
 
     def set_rev_comp(self):
         intab = "ATGC"
@@ -146,14 +154,36 @@ class Sequence:
         if (user_in == "0"):
             for i in range(6):
                 print "Reading Frame #%d: %s\n"%(i+1, self.amino_acids[i])
-        elif (user_in > 6):
+        elif (int(user_in) > 6):
             raise Exception("Valid input range from 1 to 6")
         else:
             print "Reading Frame #%s:%s"%(user_in, self.amino_acids[int(user_in)-1])
+
+    #start codon: AUG
+    #stop codons: UAG, UGA, UAA
+    def predictRF(self):
+        frames = self.get_reading_frames()
+        output = ()
+        #regex = re.compile("AUG(.*?)UGA")
+
+        for frame in frames:
+            rframe = frame.replace('T', 'U')
+            print rframe
+            #match = regex.match(frame)
+            match = re.search(r'AUG\w+(?:UAG|UAA|UGA)', rframe)
+            #print match.start()
+            if match:
+                output = output + (match.group(), )
+            else:
+                output = output + (None, )
+        print output
+        return output
+
 
 filename = 'rf.fasta'
 Seq = Sequence(filename)
 Seq.set_fasta()
 Seq.set_rev_comp()
 Seq.set_frames()
+Seq.predictRF()
 Seq.translateDNA()
