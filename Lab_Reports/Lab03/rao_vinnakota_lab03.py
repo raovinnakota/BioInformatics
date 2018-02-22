@@ -86,9 +86,9 @@ class Sequence:
         intab = "ATGC"
         outtab = "TACG"
         transtable = maketrans(intab, outtab)
+        fasta = self.get_fasta()
 
-        self.set_fasta()
-        comp = self.fasta.translate(transtable)
+        comp = fasta.translate(transtable)
         self.rev_comp = comp[::-1]
 
     def set_frames(self):
@@ -103,7 +103,7 @@ class Sequence:
     def create_frame(self, seq):
         seq = seq.replace('T', 'U')
         codons = []
-        i = 3
+        i = 0
 
         while (i < len(seq)):
             codons.append(seq[i:i+3])
@@ -113,12 +113,14 @@ class Sequence:
     def dna_to_aa(self):
         fasta = self.get_fasta()
         rev_comp = self.get_rev_comp()
+        frames = self.get_reading_frames()
         codons = []
+        amino_acids = []
 
         for i in range(3):
-            codons = self.create_frame(fasta[i:])
-            amino_acids = []
-            amino_acid_seq = ""
+            codons = self.create_frame(frames[i])
+            amino_acids[:] = []
+            amino_acid_seq = ''
             for codon in codons:
                 if codon in STANDARD_GENETIC_CODE:
                     amino_acids.append(STANDARD_GENETIC_CODE[codon])
@@ -126,10 +128,10 @@ class Sequence:
                 if amino_acid in AMINO_ACID_CODE:
                     amino_acid_seq += AMINO_ACID_CODE[amino_acid]
             self.add_amino_acid(amino_acid_seq)
-        for i in range(3):
-            codons = self.create_frame(rev_comp[i:])
-            amino_acid = []
-            amino_acid_seq = ""
+        for i in range(3,6):
+            codons = self.create_frame(frames[i])
+            amino_acids[:] = []
+            amino_acid_seq = ''
             for codon in codons:
                 if codon in STANDARD_GENETIC_CODE:
                     amino_acids.append(STANDARD_GENETIC_CODE[codon])
@@ -137,22 +139,21 @@ class Sequence:
                 if amino_acid in AMINO_ACID_CODE:
                     amino_acid_seq += AMINO_ACID_CODE[amino_acid]
             self.add_amino_acid(amino_acid_seq)
-
 
     def translateDNA(self):
-        self.set_fasta()
-        fasta = self.get_fasta()
         self.dna_to_aa()
         user_in = raw_input("Which reading frame (1-6) would you like to use?\n")
         if (user_in == "0"):
             for i in range(6):
                 print "Reading Frame #%d: %s\n"%(i+1, self.amino_acids[i])
+        elif (user_in > 6):
+            raise Exception("Valid input range from 1 to 6")
         else:
             print "Reading Frame #%s:%s"%(user_in, self.amino_acids[int(user_in)-1])
 
-filename = 'sequence.fasta'
+filename = 'rf.fasta'
 Seq = Sequence(filename)
 Seq.set_fasta()
+Seq.set_rev_comp()
 Seq.set_frames()
-print(Seq.reading_frames)
 Seq.translateDNA()
