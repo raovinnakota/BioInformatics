@@ -82,7 +82,7 @@ class Sequence:
                 raise Exception("Invalid sequence in the input")
         return (1)
 
-    #set the fasta sequence
+    #create a DNA sequence for the constructor
     def set_fasta(self):
         sequence = []
         seq = ''
@@ -96,9 +96,9 @@ class Sequence:
         if (self.validate_fasta(seq) == 1):
             sequence.append(seq)
         my_file.close()
-        #self.DNA += ''.join(sequence)
         return (''.join(sequence))
 
+    #creates the reverse complement of DNA sequence
     def set_rev_comp(self):
         intab = "ATGC"
         outtab = "TACG"
@@ -106,9 +106,9 @@ class Sequence:
         fasta = self.get_fasta()
 
         comp = fasta.translate(transtable)
-        #self.rev_comp = comp[::-1]
         return comp[::-1]
 
+    #Creates all 6 reading frames to be used for translation
     def set_frames(self):
         frames = []
         fasta = self.get_fasta()
@@ -119,6 +119,7 @@ class Sequence:
         for i in range(3):
             self.add_reading_frame(rev_comp[i:])
 
+    #creates a list of codons for any given frame
     def create_frame(self, seq):
         seq = seq.replace('T', 'U')
         codons = []
@@ -129,6 +130,7 @@ class Sequence:
             i += 3
         return (codons)
 
+    #translates dna to amino acids
     def dna_to_aa(self):
         fasta = self.get_fasta()
         rev_comp = self.get_rev_comp()
@@ -136,18 +138,8 @@ class Sequence:
         codons = []
         amino_acids = []
 
-        for i in range(3):
-            codons = self.create_frame(frames[i])
-            amino_acids[:] = []
-            amino_acid_seq = ''
-            for codon in codons:
-                if codon in STANDARD_GENETIC_CODE:
-                    amino_acids.append(STANDARD_GENETIC_CODE[codon])
-            for amino_acid in amino_acids:
-                if amino_acid in AMINO_ACID_CODE:
-                    amino_acid_seq += AMINO_ACID_CODE[amino_acid]
-            self.add_amino_acid(amino_acid_seq)
-        for i in range(3,6):
+        #for the first three reading frames, use dictionaries to tanslate
+        for i in range(6):
             codons = self.create_frame(frames[i])
             amino_acids[:] = []
             amino_acid_seq = ''
