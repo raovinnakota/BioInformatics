@@ -164,12 +164,9 @@ class Sequence:
     def predictRF(self):
         frames = self.get_reading_frames()
         output = ()
-        #regex = re.compile("AUG(.*?)UGA")
 
         for frame in frames:
             rframe = frame.replace('T', 'U')
-            print rframe
-            #match = regex.match(frame)
             match = re.search(r'AUG\w+(?:UAG|UAA|UGA)', rframe)
             #print match.start()
             if match:
@@ -179,6 +176,17 @@ class Sequence:
         print output
         return output
 
+    def longestRE(self):
+        frames = self.predictRF()
+        length = 0
+        count = 0
+
+        for i, a in enumerate(frames):
+            if (a and (len(a) > length)):
+                length = len(a)
+                count = i
+                frame = a
+        print("Longest: Frame #%d:%s")%(count, frame)
 
 filename = 'rf.fasta'
 Seq = Sequence(filename)
@@ -186,4 +194,5 @@ Seq.set_fasta()
 Seq.set_rev_comp()
 Seq.set_frames()
 Seq.predictRF()
+Seq.longestRE()
 Seq.translateDNA()
