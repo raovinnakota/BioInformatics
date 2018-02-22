@@ -37,15 +37,18 @@ AMINO_ACID_CODE = {
         }
 
 class Sequence:
+    #constructors - helpful values that I can store and they stay static
     def __init__(self, filename):
         if not filename:
             raise Exception("The Sequence class requires a filepath as the input")
         self.filename = filename
-        self.DNA = ""
-        self.rev_comp = ""
+        self.DNA = self.set_fasta()
+        self.rev_comp = self.set_rev_comp()
         self.reading_frames = []
         self.amino_acids = []
+        self.set_frames()
 
+    #getter methods to return constructors
     def get_filename(self):
         return (self.filename)
 
@@ -61,20 +64,25 @@ class Sequence:
     def get_reading_frames(self):
         return (self.reading_frames)
 
+    #setter methods to build attributes that aren't filled at initialization
     def add_reading_frame(self, frame):
         self.reading_frames.append(frame)
 
     def add_amino_acid(self, amino_acid):
         self.amino_acids.append(amino_acid)
 
+    #checker function to validate input
     def validate_fasta(self, seq):
         bases = ['A', 'T', 'C', 'G', 'N']
 
+        #if any part of the fasta sequence isn't in the list of known bases
+        #raise exception
         for i in seq:
             if i not in bases:
                 raise Exception("Invalid sequence in the input")
         return (1)
 
+    #set the fasta sequence
     def set_fasta(self):
         sequence = []
         seq = ''
@@ -88,7 +96,8 @@ class Sequence:
         if (self.validate_fasta(seq) == 1):
             sequence.append(seq)
         my_file.close()
-        self.DNA += ''.join(sequence)
+        #self.DNA += ''.join(sequence)
+        return (''.join(sequence))
 
     def set_rev_comp(self):
         intab = "ATGC"
@@ -97,9 +106,11 @@ class Sequence:
         fasta = self.get_fasta()
 
         comp = fasta.translate(transtable)
-        self.rev_comp = comp[::-1]
+        #self.rev_comp = comp[::-1]
+        return comp[::-1]
 
     def set_frames(self):
+        frames = []
         fasta = self.get_fasta()
         rev_comp = self.get_rev_comp()
 
@@ -191,9 +202,6 @@ class Sequence:
 
 filename = 'rf.fasta'
 Seq = Sequence(filename)
-Seq.set_fasta()
-Seq.set_rev_comp()
-Seq.set_frames()
 Seq.predictRF()
 Seq.longestRE()
 Seq.translateDNA()
