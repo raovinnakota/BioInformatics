@@ -187,6 +187,7 @@ class Sequence:
                 count = i
                 frame = a
         print("Longest: Frame #%d:%s")%(count, frame)
+        return frame
 
 filename = 'rf.fasta'
 Seq = Sequence(filename)
