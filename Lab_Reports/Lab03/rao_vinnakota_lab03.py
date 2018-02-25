@@ -200,4 +200,4 @@ filename = 'rf.fasta'
 Seq = Sequence(filename)
 Seq.predictRF()
 Seq.longestRE()
-Seq.translateDNA()x
+Seq.translateDNA()
