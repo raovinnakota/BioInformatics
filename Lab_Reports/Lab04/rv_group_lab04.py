@@ -8,6 +8,7 @@ Jelani Bell-Isaacs
 Lillya Galechyan
 """
 seq='atcaatgatcaacgtaagcttctaagcatgatcaaggtgctcacacagtttatccacaacctgagtggatgacatcaagataggtcgttgtatctccttcctctcgtactctcatgaccacggaaagatgatcaagagaggatgatttcttggccatatcgcaatgaatacttgtgacttgtgcttccaattgacatcttcagcgccatattgcgctggccaaggtgacggagcgggattacgaaagcatgatcatggctgttgttctgtttatcttgttttgactgagacttgttaggatagacggtttttcatcactgactagccaaagccttactctgcctgacatcgaccgtaaattgataatgaatttacatgcttccgcgacgatttacctcttgatcatcgatccgattgaagatcttcaattgttaattctcttgcctcgactcatagccatgatgagctcttgatcatgtttccttaaccctctattttttacggaagaatgatcaagctgctgctcttgatcatcgtttc'
+seq2='aactctatacctcctttttgtcgaatttgtgtgatttatagagaaaatcttattaactgaaactaaaatggtaggtttggtggtaggttttgtgtacattttgtagtatctgatttttaattacataccgtatattgtattaaattgacgaacaattgcatggaattgaatatatgcaaaacaaacctaccaccaaactctgtattgaccattttaggacaacttcagggtggtaggtttctgaagctctcatcaatagactattttagtctttacaaacaatattaccgttcagattcaagattctacaacgctgttttaatgggcgttgcagaaaacttaccacctaaaatccagtatccaagccgatttcagagaaacctaccacttacctaccacttacctaccacccgggtggtaagttgcagacattattaaaaacctcatcagaagcttgttcaaaaatttcaatactcgaaacctaccacctgcgtcccctattatttactactactaataatagcagtataattgatctgaaaagaggtggtaaaaaa'
 
 #creates a reverse complement
 def create_reverse_complement(seq):
@@ -151,9 +152,9 @@ def return_kmer(seq, kmer):
 for i in range(1,4):
     return_kmer(seq, 3*i)
 #print(frame_by_frame(seq, 3))
-rows3 = frame_by_frame(seq, 3)
-rows6 = frame_by_frame(seq, 6)
-rows9 = frame_by_frame(seq, 9)
+rows3 = frame_by_frame(seq2, 3)
+rows6 = frame_by_frame(seq2, 6)
+rows9 = frame_by_frame(seq2, 9)
 print (rows3)
 print (rows6)
 print (rows9)
