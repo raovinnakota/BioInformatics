@@ -126,9 +126,9 @@ def most_freq(dictionary):
 def frame_by_frame(seq, kmer):
     frames = reading_frames(seq)
     occurrences = []
-
     codons = create_codons(frames, kmer)
     dictionaries = create_frame_dictionaries(codons)
+
     for dictionary in dictionaries:
         occurrence = []
         occurrence.append(dictionaries.index(dictionary) + 1)
