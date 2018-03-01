@@ -120,7 +120,7 @@ def most_freq(dictionary):
         if v == highest:
             keys.append(k)
     #returning assembled list of substrings
-    return keys
+    return (keys, highest)
 
 #returns nested list of
 def frame_by_frame(seq, kmer):
@@ -133,7 +133,7 @@ def frame_by_frame(seq, kmer):
         occurrence = []
         occurrence.append(dictionaries.index(dictionary) + 1)
         if (most_freq(dictionary) == []):
-            occurrence.append("No reoccurring substrings")
+            occurrence.append("No recurring substrings")
         else:
             occurrence.append(most_freq(dictionary))
         occurrences.append(occurrence)
@@ -154,3 +154,6 @@ for i in range(1,4):
 rows3 = frame_by_frame(seq, 3)
 rows6 = frame_by_frame(seq, 6)
 rows9 = frame_by_frame(seq, 9)
+print (rows3)
+print (rows6)
+print (rows9)
