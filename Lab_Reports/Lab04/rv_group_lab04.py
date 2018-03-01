@@ -61,7 +61,6 @@ def create_frame_dictionaries(codons):
                 dictionary[i] += 1
             else:
                 dictionary[i] = 1
-        print (dictionary)
         dictionaries.append(dictionary)
     return (dictionaries)
 
@@ -85,21 +84,38 @@ def most_freq(dictionary):
     highest = max(v)
     keys = []
 
+    if (max(v) <= 1):
+        return keys
     for k,v in d.items():
         if v == highest:
             keys.append(k)
     return keys
 
-def frame_by_frame(seq):
+def frame_by_frame(seq, kmer):
     frames = reading_frames(seq)
     occurrences = []
 
-    for i in range (3, 10, 3):
-        codons = create_codons(frames, i)
-        #dictionary
+    codons = create_codons(frames, kmer)
+    dictionaries = create_frame_dictionaries(codons)
+    for dictionary in dictionaries:
+        occurrence = []
+        occurrence.append(dictionaries.index(dictionary) + 1)
+        if (most_freq(dictionary) == []):
+            occurrence.append("No reoccurring substrings")
+        else:
+            occurrence.append(most_freq(dictionary))
+        occurrences.append(occurrence)
+    return (occurrences)
 
-#frames = possible_substrings(seq, 9)
-frames = reading_frames(seq)
-codons = create_codons(frames, 3)
-#dictionary = create_dictionary(codons)
-#print (most_freq(dictionary))
+def return_kmer(seq, kmer):
+    frames = possible_substrings(seq, kmer)
+    codons = create_codons(frames, kmer)
+    dictionary = create_dictionary(codons)
+    print(most_freq(dictionary))
+
+for i in range(1,4):
+    return_kmer(seq, 3*i)
+#print(frame_by_frame(seq, 3))
+rows3 = frame_by_frame(seq, 3)
+rows6 = frame_by_frame(seq, 6)
+rows9 = frame_by_frame(seq, 9)
