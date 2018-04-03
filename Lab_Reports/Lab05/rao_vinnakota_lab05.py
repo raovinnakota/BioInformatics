@@ -186,11 +186,151 @@ class SequenceVariationDetection:
 
 
 
+def calc_similarity(seqA, seqB, simMatrix):
+    #iterate through the smaller sequence
+    numPlaces = min(len(seqA), len(seqB))
+    totalScore = 0.0
 
+    #iterate through the length of the sequence
+    for i in range(numPlaces):
+        #set the individual elements
+        residueA = seqA[i]
+        residueB = seqB[i]
+        #increment the total score by the score from the simmatrix
+        totalScore += simMatrix[residueA][residueB]
+    #return the total score
+    return totalScore
+
+
+def total_similarity(seq1):
+    #instantiate a Seq object
+    Seq = SequenceVariation(seq1)
+    #Calculate each score from seq2, seq7)
+    score2 = calc_similarity(Seq.seq1, Seq.seq2, DNA_2)
+    score3 = calc_similarity(Seq.seq1, Seq.seq3, DNA_2)
+    score4 = calc_similarity(Seq.seq1, Seq.seq4, DNA_2)
+    score5 = calc_similarity(Seq.seq1, Seq.seq5, DNA_2)
+    score6 = calc_similarity(Seq.seq1, Seq.seq6, DNA_2)
+    score7 = calc_similarity(Seq.seq1, Seq.seq7, DNA_2)
+
+    #Return all the scores as a tuple
+    return(score2, score3, score4, score5, score6, score7)
+
+
+def sequenceAlign(seqA, seqB, simMatrix=DNA_2, insert=8, extend=4):
+
+  numI = len(seqA) + 1
+  numJ = len(seqB) + 1
+
+  scoreMatrix = [[0] * numJ for x in range(numI)]
+  routeMatrix = [[0] * numJ for x in range(numI)]
+
+  for i in range(1, numI):
+    routeMatrix[i][0] = 1
+
+  for j in range(1, numJ):
+    routeMatrix[0][j] = 2
+
+  for i in range(1, numI):
+    for j in range(1, numJ):
+
+      penalty1 = insert
+      penalty2 = insert
+
+      if routeMatrix[i-1][j] == 1:
+        penalty1 = extend
+
+      elif routeMatrix[i][j-1] == 2:
+        penalty2 = extend
+
+      similarity = simMatrix[ seqA[i-1] ][ seqB[j-1] ]
+
+      paths = [scoreMatrix[i-1][j-1] + similarity, # Route 0
+               scoreMatrix[i-1][j] - penalty1, # Route 1
+               scoreMatrix[i][j-1] - penalty2] # Route 2
+
+      best = max(paths)
+      route = paths.index(best)
+
+      scoreMatrix[i][j] = best
+      routeMatrix[i][j] = route
+
+  alignA = []
+  alignB = []
+
+  i = numI-1
+  j = numJ-1
+  score = scoreMatrix[i][j]
+
+
+  while i > 0 or j > 0:
+    route = routeMatrix[i][j]
+
+    if route == 0: # Diagonal
+      alignA.append( seqA[i-1] )
+      alignB.append( seqB[j-1] )
+      i -= 1
+      j -= 1
+
+    elif route == 1: # Gap in seqB
+      alignA.append( seqA[i-1] )
+      alignB.append( '-' )
+      i -= 1
+
+    elif route == 2: # Gap in seqA
+      alignA.append( '-' )
+      alignB.append( seqB[j-1] )
+      j -= 1
+
+  alignA.reverse()
+  alignB.reverse()
+  alignA = ''.join(alignA)
+  alignB = ''.join(alignB)
+
+  return score, alignA, alignB
+
+
+def consensusMultipleAlign(seqs, threshold, simMatrix):
+
+  n = len(seqs)
+  multipleAlign = []
+
+  i = 0
+  for j in range(i+1,n):
+    seqB = seqs[j]
+
+    if not multipleAlign:
+      seqA = seqs[i]
+      score, alignA, alignB = sequenceAlign(seqA, seqB, simMatrix)
+      multipleAlign.append(alignA)
+      multipleAlign.append(alignB)
+
+    else:
+      score, alignA, alignB = sequenceAlign(seqA, seqB, simMatrix)
+
+      gaps = []
+      for k, letter in enumerate(alignA):
+        if letter == '-':
+          gaps.append(k)
+
+      for k, seq in enumerate(multipleAlign):
+        for gap in gaps:
+          seq = seq[:gap] + '-' + seq[gap:]
+
+        multipleAlign[k] = seq
+
+      multipleAlign.append(alignB)
+
+  for k, seq in enumerate(multipleAlign):
+    print(k, seq)
 
 
 
 seq1 = 'GCACGTATTGATTGGCCTGTACCTA'
 Seq = SequenceVariation(seq1)
 SeqDet = SequenceVariationDetection(Seq.seq1, Seq.seq7)
-print (SeqDet.mut_type)
+seqs = [Seq.seq1, Seq.seq2, Seq.seq3, Seq.seq4, Seq.seq5, Seq.seq6, Seq.seq7]
+#print (simpleProfileMultipleAlign(seqs, DNA_2))
+print (consensusMultipleAlign(seqs, 0.25, DNA_2))
+print (total_similarity(seq1))
+# print (sequenceAlign(Seq.seq1, Seq.seq4))
