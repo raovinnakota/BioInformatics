@@ -227,12 +227,14 @@ if __name__ == '__main__':
 
   normalisePixmap(pixmap2)
 
-  pixmapToImage(pixmap2, mode='L').show()
+  #uncomment to show actual pixmap
+  #pixmapToImage(pixmap2, mode='L').show()
 
   clusters = brightPixelCluster(pixmap2)
   sizes = [len(c) for c in clusters]
   pyplot.hist(sizes, 40)
-  pyplot.show()
+  #uncomment to show histogram
+  #pyplot.show()
 
   smallBlobs = []
   mediumBlobs = []
