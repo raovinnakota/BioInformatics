@@ -11,7 +11,9 @@ class SequenceVariation:
         if (input_seq == ""):
             raise Exception("Can't create class with empty string")
         #create seq1 from input str
+        self.seqs = []
         self.seq1 = input_seq
+        self.seqs.append(self.seq1)
         #call various class methods, starting with valid
         self.validate()
         self.seq2 = self.point_mutations(self.seq1, 10)
@@ -19,6 +21,7 @@ class SequenceVariation:
         self.seq5 = self.add_variable_copy(self.seq1)
         self.seq6 = self.del_variable_copy(self.seq1)
         self.seq7 = self.transposon(self.seq1, 'ACGTGGTTGCACGT')
+        self.seq8 = self.deletion_mutation(self.seq1)
 
 
     def get_input_seq(self):
@@ -57,8 +60,16 @@ class SequenceVariation:
             #set the location to the random chosen element
             input_seq[loc] = mut
         #return mutated sequence as string
+        self.seqs.append(''.join(input_seq))
         return (''.join(input_seq))
 
+    def deletion_mutation(self, seq):
+        input_seq = seq
+
+        n = random.randint(0, len(input_seq) - 1)
+        seq8 = input_seq[:n] + input_seq[n+1:]
+        self.seqs.append(seq8)
+        return seq8
 
     def recombination(self, seq1, seq2):
         #find the halfway point, use min just in case len(1) != len(2)
@@ -69,6 +80,8 @@ class SequenceVariation:
         seq4 = seq2[:mid] + seq1[mid:]
 
         #return the pair of sequences
+        self.seqs.append(seq3)
+        self.seqs.append(seq4)
         return (seq3, seq4)
 
 
@@ -87,6 +100,7 @@ class SequenceVariation:
                 if (one == two):
                     #new string with variable copy added
                     seq5 = seq1[:j+(2*i)] + one + seq1[j+(2*i):]
+        self.seqs.append(seq5)
         return (seq5)
 
 
@@ -100,6 +114,7 @@ class SequenceVariation:
                 if (one == two):
                     #new string with one substring removed
                     seq6 = seq1[:j+i] + seq1[j+(2*i):]
+        self.seqs.append(seq6)
         return (seq6)
 
 
@@ -115,14 +130,10 @@ class SequenceVariation:
         index = seq1.find(subseq)
         #create new sequence with transposon inserted
         seq7 = seq1[:index] + tseq + seq1[index+sublen:]
+        self.seqs.append(seq7)
         return (seq7)
 
 
 seq1 = 'GCACGTATTGATTGGCCTGTACCTA'
 Seq = SequenceVariation(seq1)
-SeqDet = SequenceVariationDetection(Seq.seq1, Seq.seq7)
 seqs = [Seq.seq1, Seq.seq2, Seq.seq3, Seq.seq4, Seq.seq5, Seq.seq6, Seq.seq7]
-#print (simpleProfileMultipleAlign(seqs, DNA_2))
-print (consensusMultipleAlign(seqs, 0.25, DNA_2))
-print (total_similarity(seq1))
-# print (sequenceAlign(Seq.seq1, Seq.seq4))
