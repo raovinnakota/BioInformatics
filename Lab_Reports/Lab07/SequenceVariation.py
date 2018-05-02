@@ -5,6 +5,17 @@ Rao Vinnakota
 """
 import random
 
+def random_sequence(len):
+    seq = ''
+    i = 0
+
+    if (len < 0):
+        raise Exception("Not a valid length")
+    while (i < len):
+        seq += random.choice('ATCG')
+        i += 1
+    return seq
+
 class SequenceVariation:
     def __init__(self, input_seq):
         #check if the input string is empty, Exception if it is
@@ -89,7 +100,9 @@ class SequenceVariation:
     def add_variable_copy(self, seq1):
         #max length of variable copy substring
         max_int = int(len(seq1) / 2)
-        seq5 = seq1
+        n = random.randint(0, len(seq1))
+        var_copy = random_sequence(3)
+        seq5 = seq1[:n] + var_copy + var_copy + seq1[n:]
 
         #try substrings of different length, start at 3
         for i in range(3, max_int + 1):
@@ -107,7 +120,8 @@ class SequenceVariation:
 
     def del_variable_copy(self, seq1):
         max_int = int(len(seq1) / 2)
-        seq6 = seq1
+        n = random.randint(0, len(seq1))
+        seq6 = seq1[:n] + seq1[n+3:]
 
         for i in range(3, max_int + 1):
             for j in range(len(seq1)):
@@ -136,6 +150,6 @@ class SequenceVariation:
         return (seq7)
 
 
-seq1 = 'GCACGTATTGATTGGCCTGTACCTA'
-Seq = SequenceVariation(seq1)
-seqs = [Seq.seq1, Seq.seq2, Seq.seq3, Seq.seq4, Seq.seq5, Seq.seq6, Seq.seq7]
+#seq1 = 'GCACGTATTGATTGGCCTGTACCTA'
+#Seq = SequenceVariation(seq1)
+#seqs = [Seq.seq1, Seq.seq2, Seq.seq3, Seq.seq4, Seq.seq5, Seq.seq6, Seq.seq7]
