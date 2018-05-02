@@ -34,6 +34,9 @@ class SequenceVariation:
         self.seq6 = self.del_variable_copy(self.seq1)
         self.seq7 = self.transposon(self.seq1, 'ACGTGGTTGCACGT')
         self.seq8 = self.deletion_mutation(self.seq1)
+        self.seq9 = self.caps(self.seq1)
+        self.seq10 = self.point_mutations(self.seq1, 5)
+        self.seqs.append(self.seq10)
 
 
     def get_input_seq(self):
@@ -149,6 +152,12 @@ class SequenceVariation:
         self.seqs.append(seq7)
         return (seq7)
 
+
+    def caps(self, seq1):
+         seq9 = random.choice('ATCG') + self.seq1 +  random.choice('ATCG')
+
+         self.seqs.append(seq9)
+         return (seq9)
 
 #seq1 = 'GCACGTATTGATTGGCCTGTACCTA'
 #Seq = SequenceVariation(seq1)
