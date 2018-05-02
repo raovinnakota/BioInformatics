@@ -19,6 +19,7 @@ class SequenceVariation:
         self.seq2 = self.point_mutations(self.seq1, 10)
         self.seq3, self.seq4 = self.recombination(self.seq1, self.seq2)
         self.seq5 = self.add_variable_copy(self.seq1)
+        self.seqs.append(self.seq5)
         self.seq6 = self.del_variable_copy(self.seq1)
         self.seq7 = self.transposon(self.seq1, 'ACGTGGTTGCACGT')
         self.seq8 = self.deletion_mutation(self.seq1)
@@ -69,7 +70,7 @@ class SequenceVariation:
         n = random.randint(0, len(input_seq) - 1)
         seq8 = input_seq[:n] + input_seq[n+1:]
         self.seqs.append(seq8)
-        return seq8
+        return seq
 
     def recombination(self, seq1, seq2):
         #find the halfway point, use min just in case len(1) != len(2)
@@ -88,6 +89,7 @@ class SequenceVariation:
     def add_variable_copy(self, seq1):
         #max length of variable copy substring
         max_int = int(len(seq1) / 2)
+        seq5 = seq1
 
         #try substrings of different length, start at 3
         for i in range(3, max_int + 1):
@@ -100,12 +102,12 @@ class SequenceVariation:
                 if (one == two):
                     #new string with variable copy added
                     seq5 = seq1[:j+(2*i)] + one + seq1[j+(2*i):]
-        self.seqs.append(seq5)
         return (seq5)
 
 
     def del_variable_copy(self, seq1):
         max_int = int(len(seq1) / 2)
+        seq6 = seq1
 
         for i in range(3, max_int + 1):
             for j in range(len(seq1)):

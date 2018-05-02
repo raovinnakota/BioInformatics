@@ -83,6 +83,7 @@ class SequenceVariation:
     def add_variable_copy(self, seq1):
         #max length of variable copy substring
         max_int = int(len(seq1) / 2)
+        seq5 = seq1
 
         #try substrings of different length, start at 3
         for i in range(3, max_int + 1):
