@@ -144,4 +144,13 @@ def k_main(testData1, testData2, testData3):
 
   x, y = zip(*centers)
   pyplot.scatter(x, y, s=40, c='black', marker='o')
+  labels = ['point{0}'.format(i) for i in range(30)]
+
+  for label, x, y in zip(labels, testDataB[:, 0], testDataB[:, 1]):
+    pyplot.annotate(
+        label,
+        xy=(x, y), xytext=(-10, 10),
+        textcoords='offset points', ha='right', va='bottom',
+        bbox=dict(boxstyle='round,pad=0.5', fc='yellow', alpha=0.5),
+        arrowprops=dict(arrowstyle = '->', connectionstyle='arc3,rad=0'))
   pyplot.show()

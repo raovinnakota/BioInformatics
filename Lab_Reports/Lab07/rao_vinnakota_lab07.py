@@ -18,12 +18,12 @@ Seq1, Seq2, Seq3 = SequenceVariation(seq1), SequenceVariation(seq2), SequenceVar
 aa1, aa2, aa3 = list_convert(Seq1.seqs), list_convert(Seq2.seqs), list_convert(Seq3.seqs)
 
 #creating the x,y values, or pairwise scores by comparing altered with base
-def create_pairs(input_list, scoreMatrix):
+def create_pairs(base_point, input_list, scoreMatrix):
     scores = []
 
-    i = 1
+    i = 0
     while (i < len(input_list)):
-        scores.append(pairAlignScore(input_list[0], input_list[i], scoreMatrix))
+        scores.append(pairAlignScore(base_point, input_list[i], scoreMatrix))
         i += 1
     return scores
 
@@ -40,9 +40,9 @@ def create_paired(list1, list2):
     return out
 
 #getting distances
-x1, y1 = create_pairs(Seq1.seqs, DNA_2), create_pairs(aa1, BLOSUM62)
-x2, y2 = create_pairs(Seq2.seqs, DNA_2), create_pairs(aa2, BLOSUM62)
-x3, y3 = create_pairs(Seq3.seqs, DNA_2), create_pairs(aa3, BLOSUM62)
+x1, y1 = create_pairs(seq1, Seq1.seqs, DNA_2), create_pairs(seq1, aa1, BLOSUM62)
+x2, y2 = create_pairs(seq1, Seq2.seqs, DNA_2), create_pairs(seq1, aa2, BLOSUM62)
+x3, y3 = create_pairs(seq1, Seq3.seqs, DNA_2), create_pairs(seq1, aa3, BLOSUM62)
 #creating pairs
 data1 = create_paired(x1, y1)
 data2 = create_paired(x2, y2)
