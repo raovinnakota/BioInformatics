@@ -121,17 +121,17 @@ def k_main(testData1, testData2, testData3):
   print("\nK-means clustering\n")
 
   # 1000 points in 2D
-  testDataA = random.random((1000,2)) # No clumps
+  #testDataA = random.random((1000,2)) # No clumps
 
   # group into 3 random clusters
-  centers, clusters = kMeans(testDataA, 3)
+  #centers, clusters = kMeans(testDataA, 3)
 
   # here we add two distinct clumps of 2D points
-  testDataB1 = random.normal(0.0, 2.0, (100,2))
-  testDataB2 = random.normal(7.0, 2.0, (100,2))
-  testDataB = vstack([testDataB1, testDataB2]) # Two clumps
+  #testDataB1 = random.normal(0.0, 2.0, (100,2))
+  #testDataB2 = random.normal(7.0, 2.0, (100,2))
+  testDataB = vstack([testData1, testData2, testData3]) # Two clumps
 
-  centers, clusters = kMeans(testDataB, 2)
+  centers, clusters = kMeans(testDataB, 3)
 
   # display graph in colored clusters
   colors = ['#FF0000','#00FF00','#0000FF',
