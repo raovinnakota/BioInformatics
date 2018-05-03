@@ -85,7 +85,7 @@ def thresh_main(data1, data2, data3):
   data = vstack(data)
   random.shuffle(data) # Randomise order
 
-  clusters = simpleCluster(data, 0.10)
+  clusters = simpleCluster(data, 0.5)
 
   colors = ['#F2C1B6','#A0B9A2','#F0A050',
             '#C0F0A0','#80A0B0','#B0A0C0']
