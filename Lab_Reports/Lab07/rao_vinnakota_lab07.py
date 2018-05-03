@@ -8,6 +8,7 @@ from SequenceVariation import SequenceVariation, random_sequence
 from protein_translate import list_convert
 from pairwise_score import pairAlignScore, BLOSUM62, DNA_2
 from kmeans_commented import k_main
+from thresh_clust import thresh_main
 
 seq1, seq2, seq3 = random_sequence(20), random_sequence(20), random_sequence(20)
 Seq1, Seq2, Seq3 = SequenceVariation(seq1), SequenceVariation(seq2), SequenceVariation(seq3)
@@ -41,7 +42,4 @@ data1 = create_paired(x1, y1)
 data2 = create_paired(x2, y2)
 data3 = create_paired(x3, y3)
 k_main(data1, data2, data3)
-
-#print(data1)
-#print(data2)
-#print(data3)
+thresh_main(data1, data2, data3)
