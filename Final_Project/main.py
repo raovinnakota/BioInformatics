@@ -59,6 +59,7 @@ humaligned = consensusMultipleAlign(humseqs, 0.25, DNA_2)
 canceraligned = consensusMultipleAlign(cancerseqs, 0.25, DNA_2)
 
 known = total_similarity(humaligned[0], humaligned, 'human') + total_similarity(humaligned[0], canceraligned, 'cancer')
+print(known)
 query_score = pairAlignScore(humaligned[0], query_seq, DNA_2)
 
 result = kNearestNeighbour(known, query_score, k=8)
