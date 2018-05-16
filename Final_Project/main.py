@@ -6,6 +6,7 @@ Final Project
 import sys
 from align import DNA_2, consensusMultipleAlign, pairAlignScore
 from kclass import kNearestNeighbour, euclideanDistance, getFeatureDistance
+from scipy import stats
 
 humanbase = "humanbase.fasta"
 cancerbase = "cancerbase.fasta"
@@ -43,11 +44,21 @@ def read_seqs(file_list):
 def total_similarity(baseline, seqs, input_type):
     scores = []
 
-    for i in seqs:
-        score = ((pairAlignScore(baseline, i, DNA_2)), input_type)
-        scores.append(score)
+    if (input_type == "None"):
+        for i in seqs:
+            score = pairAlignScore(baseline, i, DNA_2)
+            scores.append(score)
+    else:
+        for i in seqs:
+            score = ((pairAlignScore(baseline, i, DNA_2)), input_type)
+            scores.append(score)
     return (scores)
 
+def hypothesis_test(pop1, pop2):
+    #mean1 = sum(pop1)/float(len(pop1))
+    #mean2 = sum(pop2)/float(len(pop2))
+    t2,p2 = stats.ttest_ind(pop1, pop2)
+    return (t2,p2)
 
 humseqs = read_seqs(humfiles)
 cancerseqs = read_seqs(cancerfiles)
@@ -64,3 +75,6 @@ query_score = pairAlignScore(humaligned[0], query_seq, DNA_2)
 
 result = kNearestNeighbour(known, query_score, k=8)
 print('Cell line type:', result)
+
+print ('T-score, p-value:', hypothesis_test(total_similarity(humaligned[0], humaligned, "None"),
+        total_similarity(humaligned[0], canceraligned, "None")))
